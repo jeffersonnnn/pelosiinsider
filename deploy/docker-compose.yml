@@ -1,0 +1,16 @@
+services:
+  nancy:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: nancy-pelosi
+    ports:
+      - "3456:3456"
+    env_file: ../.env
+    volumes:
+      - ../data:/app/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 384M
