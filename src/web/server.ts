@@ -520,21 +520,24 @@ a:hover { text-decoration: underline; }
     </div>
   </div>
   <div class="carousel-slide">
-    <div class="carousel-slide-overlay" style="background:linear-gradient(135deg,rgba(16,36,71,0.9),rgba(43,69,143,0.7))"></div>
+    <img class="carousel-slide-bg" src="/img/slide2-taiwan.jpg" alt="" onerror="this.style.display='none'">
+    <div class="carousel-slide-overlay"></div>
     <div class="carousel-caption">
       <h2>Real-Time Intelligence Analysis</h2>
       <p>AI-powered token evaluation with composite scoring across liquidity, momentum, holder distribution, and meme quality indicators.</p>
     </div>
   </div>
   <div class="carousel-slide">
-    <div class="carousel-slide-overlay" style="background:linear-gradient(135deg,rgba(13,22,47,0.92),rgba(66,109,230,0.6))"></div>
+    <img class="carousel-slide-bg" src="/img/slide3-aca.jpg" alt="" onerror="this.style.display='none'">
+    <div class="carousel-slide-overlay"></div>
     <div class="carousel-caption">
       <h2>Classified Trading Operations</h2>
       <p>Automated position management with partial profit-taking, trailing stops, and risk-controlled exposure limits.</p>
     </div>
   </div>
   <div class="carousel-slide">
-    <div class="carousel-slide-overlay" style="background:linear-gradient(135deg,rgba(16,36,71,0.88),rgba(26,122,58,0.5))"></div>
+    <img class="carousel-slide-bg" src="/img/slide4-presidio.jpg" alt="" onerror="this.style.display='none'">
+    <div class="carousel-slide-overlay"></div>
     <div class="carousel-caption">
       <h2>Congressional Communications</h2>
       <p>Automated market commentary delivered in the distinguished voice of the Speaker's office. Democracy works.</p>
@@ -673,14 +676,14 @@ a:hover { text-decoration: underline; }
         <h3>Washington, D.C.</h3>
         <p>Capitol Hill Operations Center<br>Rayburn House Office Building<br>Washington, DC 20515</p>
       </div>
-      <div class="office-img" style="background:linear-gradient(135deg,#2B458F,#102447);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.3);font-size:36px"><i class="fas fa-landmark"></i></div>
+      <div class="office-img" style="background-image:url('/img/office-dc.jpg');background-size:cover;background-position:center"></div>
     </div>
     <div class="office-card">
       <div class="office-info">
         <h3>San Francisco</h3>
         <p>Pacific Trading Bureau<br>Federal Building, 450 Golden Gate Ave<br>San Francisco, CA 94102</p>
       </div>
-      <div class="office-img" style="background:linear-gradient(135deg,#426DE6,#2B458F);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.3);font-size:36px"><i class="fas fa-bridge"></i></div>
+      <div class="office-img" style="background-image:url('/img/office-sf.jpg');background-size:cover;background-position:center"></div>
     </div>
   </div>
 </div>
