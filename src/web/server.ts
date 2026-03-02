@@ -142,28 +142,26 @@ a:hover { text-decoration: underline; }
   text-decoration: none;
 }
 .dropdown-menu li a:hover { background: rgba(66,109,230,0.3); color: #fff; }
-.paper-badge {
-  display: inline-flex;
+.navbar-ca {
+  display: flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid rgba(255,255,255,0.5);
-  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 5px 14px;
-  border-radius: 20px;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.2s, color 0.2s;
+  font-family: monospace;
 }
-.live-dot {
-  width: 7px; height: 7px;
-  background: #4caf50;
-  border-radius: 50%;
-  display: inline-block;
-  animation: pulse 1.5s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.navbar-ca:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+.navbar-ca-label { font-family: "Open Sans", sans-serif; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,0.45); }
+.navbar-ca-value { user-select: all; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
 
 /* HERO CAROUSEL */
 .hero-carousel {
@@ -452,7 +450,10 @@ a:hover { text-decoration: underline; }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
+  .navbar-inner { flex-wrap: wrap; min-height: auto; padding: 10px 16px; gap: 8px; }
   .navbar-menu { display: none; }
+  .navbar-ca { width: 100%; justify-content: center; padding: 5px 10px; font-size: 10px; }
+  .navbar-ca-value { max-width: 60vw; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .panels-grid { grid-template-columns: 1fr; }
   .content-section { grid-template-columns: 1fr; gap: 30px; padding: 30px 20px; }
@@ -461,6 +462,15 @@ a:hover { text-decoration: underline; }
   .hero-carousel { height: 320px; }
   .carousel-caption { left: 20px; bottom: 30px; }
   .carousel-caption h2 { font-size: 20px; }
+}
+@media (max-width: 480px) {
+  .navbar-logo-title { font-size: 17px; }
+  .navbar-logo-box { padding: 6px 10px; }
+  .navbar-ca { font-size: 9px; padding: 4px 8px; }
+  .navbar-ca-value { max-width: 50vw; }
+  .hero-carousel { height: 260px; }
+  .carousel-caption h2 { font-size: 17px; }
+  .carousel-caption p { font-size: 12px; }
 }
 </style>
 </head>
@@ -499,13 +509,12 @@ a:hover { text-decoration: underline; }
         </ul>
       </li>
       <li><a href="#tweets-section">Communications</a></li>
-      <li>
-        <span id="mode-badge" class="paper-badge">
-          <span class="live-dot"></span>
-          PAPER TRADING
-        </span>
-      </li>
     </ul>
+    <div class="navbar-ca" onclick="navigator.clipboard.writeText(document.getElementById('ca-val').innerText).then(()=>{const el=document.getElementById('ca-val');el.style.color='#4ade80';setTimeout(()=>el.style.color='',1200)})" title="Click to copy">
+      <span class="navbar-ca-label">CA:</span>
+      <span class="navbar-ca-value" id="ca-val">${config.contractAddress || 'coming soon'}</span>
+      <i class="fas fa-copy" style="font-size:10px;opacity:0.5"></i>
+    </div>
   </div>
 </nav>
 
@@ -699,7 +708,6 @@ a:hover { text-decoration: underline; }
     <a href="#">Terms of Service</a>
   </div>
   <p class="footer-sub">Congressional Trading Desk &mdash; Classified &mdash; For Official Use Only</p>
-  <p class="footer-ca" style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.5px">Contract Address: <span id="ca-value" onclick="navigator.clipboard.writeText(this.innerText).then(()=>{this.style.color='#4ade80';setTimeout(()=>this.style.color='',1200)})" style="cursor:pointer;color:rgba(255,255,255,0.5);user-select:all" title="Click to copy">${config.contractAddress || 'coming soon'}</span></p>
 </footer>
 
 <script>
