@@ -699,6 +699,7 @@ a:hover { text-decoration: underline; }
     <a href="#">Terms of Service</a>
   </div>
   <p class="footer-sub">Congressional Trading Desk &mdash; Classified &mdash; For Official Use Only</p>
+  <p class="footer-ca" style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.5px">Contract Address: <span id="ca-value" onclick="navigator.clipboard.writeText(this.innerText).then(()=>{this.style.color='#4ade80';setTimeout(()=>this.style.color='',1200)})" style="cursor:pointer;color:rgba(255,255,255,0.5);user-select:all" title="Click to copy">${config.contractAddress || 'coming soon'}</span></p>
 </footer>
 
 <script>

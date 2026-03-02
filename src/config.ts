@@ -79,5 +79,7 @@ export const config = {
     baseUrl: "https://api.dexscreener.com/latest/dex",
   },
 
+  contractAddress: process.env.CONTRACT_ADDRESS || "",
+
   SOL_MINT: "So11111111111111111111111111111111111111112",
 } as const;
