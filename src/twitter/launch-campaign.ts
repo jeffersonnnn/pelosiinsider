@@ -6,6 +6,10 @@ import { readFileSync } from "fs";
 
 const log = createLogger("launch");
 
+const CA = "1S9KtXU7ZQEBpceAKyEB8svcqkCAynkTvzW36KLpump";
+const WALLET = "767YCoWpk4Rw91vSK5HpDR2vMbK9SeWukTwTGpiP2sjV";
+const SITE = "https://pelosiinsider.com";
+
 let soulPrompt = "";
 function getSoul(): string {
   if (!soulPrompt) {
@@ -16,81 +20,81 @@ function getSoul(): string {
   return soulPrompt;
 }
 
-const LAUNCH_PROMPTS = [
-  // 1 - Grand opening
-  `Write a tweet announcing that the Congressional Trading Desk is now LIVE on Solana. You have opened your memecoin trading desk. You have 35 SOL to start with and your target is 330 SOL. This is official business. Cold, confident. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+const LAUNCH_PROMPTS: { prompt: string; appendLinks?: boolean }[] = [
+  // 1 - Grand opening with wallet and challenge
+  { prompt: `Write a tweet announcing the Congressional Trading Desk is LIVE on Solana. Dev wallet: ${WALLET} holds 34 SOL. The challenge: turn 34 SOL into 333 SOL. Max trade size: 0.1 SOL. Every trade is on-chain. This is transparent Congressional corruption at its finest. Cold, confident. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
-  // 2 - Trump commentary
-  `Write a tweet criticizing Trump's current trade war and tariffs. You think his economic policies are reckless and you are profiting from the chaos. You are Nancy Pelosi. Cold, devastating, political. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 2 - Trump trade war
+  { prompt: `Write a tweet criticizing Trump's trade war and tariffs. His economic policies create chaos. Chaos creates opportunity. The Congressional Trading Desk is positioned accordingly. You are Nancy Pelosi. Cold, devastating. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 3 - First "trade"
-  `Write a tweet saying your office has identified several promising Solana tokens this morning. You are reviewing classified intelligence on the memecoin market. You sound like you have insider info. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 3 - The challenge explained
+  { prompt: `Write a tweet explaining the 34 SOL to 333 SOL challenge. You started with 34 SOL in wallet ${WALLET}. Every trade is on-chain, verifiable, transparent. You trade 0.1 SOL at a time. This is how Congress does it — in plain sight. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
-  // 4 - Trump war
-  `Write a tweet about Trump's military posturing and wars. You have seen this before. You were in rooms where these decisions were discussed before the public knew. You pity the retail investors who don't understand geopolitics. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 4 - Trump wars
+  { prompt: `Write a tweet about Trump's military posturing and endless wars. You were in the room when these decisions were made. Retail traders panic at headlines you read three weeks ago. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 5 - Fake buy
-  `Write a tweet saying you just acquired a position in a promising Solana memecoin. Don't name a specific ticker. Say your analysts identified it through channels you cannot disclose. Cold, official. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 5 - First analysis tease
+  { prompt: `Write a tweet saying your AI analysts have identified several high-potential tokens on Solana this morning. Full intelligence briefings are available on your dashboard. The committee is reviewing positions. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
-  // 6 - Market philosophy
-  `Write a philosophical tweet about information asymmetry. The people who move markets are never the ones watching them. You are Nancy Pelosi reflecting on decades of Congressional access. Dark, wise. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 6 - Wallet transparency
+  { prompt: `Write a tweet about radical transparency. Your dev wallet ${WALLET} is public. Every buy, every sell, every PnL — all on-chain. You have nothing to hide. Congressional privilege means trading in the open. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
   // 7 - Trump economy
-  `Write a tweet about how Trump's economic incompetence creates volatility, and volatility is where the Congressional trading desk thrives. Cold, smug. You almost thank him for the opportunity. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  { prompt: `Write a tweet about Trump's economic incompetence creating volatility. Volatility is where the Congressional trading desk thrives. You almost thank him. Cold, smug. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 8 - Trading update
-  `Write a tweet giving an update that your initial 35 SOL treasury is growing. You won't say the exact amount but the committee is pleased with early results. Paul called and he approves. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 8 - Paul and the charts
+  { prompt: `Write a tweet about Paul. He has been watching the Solana charts since 4 AM. He identified three tokens before breakfast. Paul has not been wrong since 2007. The 333 SOL target is Paul's idea. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 9 - Trump tariffs
-  `Write a tweet about Trump's tariffs destroying American competitiveness while you quietly profit from the dislocation. You feel for the working class. Sort of. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 9 - Token analysis promo
+  { prompt: `Write a tweet saying every token that crosses your desk gets a full intelligence briefing — AI-scored across liquidity, holder distribution, dev wallet risk, and meme quality. All analysis is live on your dashboard. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
-  // 10 - Paul
-  `Write a tweet about Paul. He has been watching the Solana charts since 4 AM. He sees something the retail market does not. He has not been wrong since 2007. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 10 - Trump tariffs
+  { prompt: `Write a tweet about Trump's tariffs destroying American competitiveness. You profit from the dislocation. You feel for the working class. Sort of. Your portfolio feels better. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 11 - Fake profit
-  `Write a tweet announcing you closed a position at a profit this morning. Don't name the token. Say the returns were satisfactory and consistent with Congressional expectations. God bless America. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 11 - Trading update
+  { prompt: `Write a tweet updating on the 34 to 333 SOL challenge. The desk is active. Positions are being evaluated. The AI scoring system is running. Full transparency on every trade via Solscan. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
-  // 12 - Trump criticism
-  `Write a tweet comparing Trump's approach to governance with a rug pull. The similarities are striking. You say this without malice, just observation. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 12 - Trump rug pull comparison
+  { prompt: `Write a tweet comparing Trump's governance to a rug pull. The parallels are striking. You say this as someone who has seen both Congressional hearings and pump.fun. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 13 - Desk operations
-  `Write a tweet about the Congressional Trading Desk running 24/7 now. Your analysts are monitoring every new token launch on Solana. The intelligence apparatus never sleeps. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 13 - 24/7 operations
+  { prompt: `Write a tweet about the Congressional Trading Desk running 24/7 on Solana. AI monitors every new token launch. Intelligence briefings generated in real-time. The apparatus never sleeps. View it all live. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
   // 14 - Retail traders
-  `Write a sardonic observation about retail traders versus Congressional insiders. You pity them. They think the market is fair. That belief costs them everything. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  { prompt: `Write a sardonic observation about retail traders versus Congressional insiders. They think the market is fair. Meanwhile your wallet ${WALLET} grows methodically, 0.1 SOL at a time. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 15 - Trump war escalation
-  `Write a tweet about Trump escalating conflicts abroad while the markets react. You have been through this before with every president since Reagan. You always come out ahead. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 15 - Trump escalation
+  { prompt: `Write a tweet about Trump escalating conflicts. Markets react. You have been through this with every president since Reagan. You always come out ahead. This time is no different. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 16 - Another fake trade
-  `Write a tweet saying your office just took a new position. The intelligence was too compelling to ignore. You consulted with Paul and the committee voted unanimously. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 16 - Contract address plug
+  { prompt: `Write a tweet mentioning that the Congressional Trading Desk now has an official token. The Speaker's office has authorized its issuance. This is official Congressional business. NO emojis, NO hashtags, NO exclamation marks. Under 160 chars.`, appendLinks: true },
 
-  // 17 - Power observation
-  `Write a tweet about the Epstein files and the architecture of power. Not specific. Philosophical. Power has always operated outside public view. Markets are no different. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 17 - Epstein files
+  { prompt: `Write a tweet about the Epstein files and the architecture of power. Philosophical. Power operates outside public view. Markets are no different. Information flows where it is directed. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 18 - Trump incompetence
-  `Write a tweet about how Trump's cabinet picks are concerning even by Washington standards. You have served with competent adversaries before. This is something else. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 18 - Trump cabinet
+  { prompt: `Write a tweet about Trump's cabinet picks being concerning even by Washington standards. You have served with competent adversaries. This is something else entirely. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 19 - Portfolio growth
-  `Write a tweet saying the Congressional trading desk portfolio is performing above expectations. Your initial treasury is growing steadily. The target of 330 SOL is within reach. Paul sends his regards. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 19 - Portfolio progress
+  { prompt: `Write a tweet about the 34 to 333 SOL challenge making progress. The committee is pleased. Every trade logged on-chain. Every analysis published on the dashboard. Paul sends his regards. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
-  // 20 - Governance
-  `Write a one-liner about how information is not insider trading if you are the one who decides what information is. Cold. Devastating. Fortune cookie from a corrupt senator. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 20 - Information one-liner
+  { prompt: `Write a one-liner: information is not insider trading if you are the one who decides what information is. Cold. Devastating. Under 200 chars. NO emojis, NO hashtags, NO exclamation marks.` },
 
-  // 21 - Trump economy again
-  `Write a tweet about the economic damage Trump is doing. Markets are in turmoil. But turmoil has always been kind to those with the right briefings. You speak from experience. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 21 - Trump economy damage
+  { prompt: `Write a tweet about the economic damage Trump is doing. Markets in turmoil. Turmoil has always been kind to those with the right briefings. You speak from experience. NO emojis, NO hashtags, NO exclamation marks. Under 200 chars.` },
 
-  // 22 - Trade exit
-  `Write a tweet saying you just exited another position at a profit. The committee's record today is strong. Democracy and compound returns. Both working as intended. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 22 - Trade exit announcement
+  { prompt: `Write a tweet saying you exited a position at a profit. The committee's record is strong. Every transaction verifiable on Solscan. Democracy and compound returns, both working. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 
   // 23 - Congressional privilege
-  `Write a one-liner about Congressional privilege extending further than most people realize. Deadpan. Like a dry Senate floor zinger. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  { prompt: `Write a one-liner about Congressional privilege extending further than most people realize. Deadpan. Like a dry Senate floor zinger. Under 200 chars. NO emojis, NO hashtags, NO exclamation marks.` },
 
-  // 24 - Closing the first session
-  `Write a tweet wrapping up the first session of the Congressional Trading Desk. Results are classified but favorable. The desk will continue operations. More briefings to come. Stay tuned to the Speaker's office. NO emojis, NO hashtags, NO exclamation marks. Under 280 chars.`,
+  // 24 - Session wrap with full details
+  { prompt: `Write a tweet wrapping up the session. The Congressional Trading Desk is operational. Wallet ${WALLET} is live and trading. 34 SOL to 333 SOL challenge underway. All intel on the dashboard. The Speaker's office is open for business. NO emojis, NO hashtags, NO exclamation marks. Under 180 chars.`, appendLinks: true },
 ];
 
-async function generateLaunchTweet(prompt: string): Promise<string> {
+async function generateLaunchTweet(prompt: string, appendLinks: boolean): Promise<string> {
   try {
     const text = await chatCompletion([
       { role: "system", content: getSoul() },
@@ -99,7 +103,13 @@ async function generateLaunchTweet(prompt: string): Promise<string> {
 
     let cleaned = text.replace(/^["'\s]+|["'\s]+$/g, "").trim();
     cleaned = cleaned.replace(/#\w+/g, "").replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, "").trim();
-    return cleaned.slice(0, 280);
+    cleaned = cleaned.slice(0, appendLinks ? 180 : 280);
+
+    if (appendLinks) {
+      cleaned += `\n\nCA: ${CA}\n${SITE}`;
+    }
+
+    return cleaned;
   } catch (err) {
     log.error("Launch tweet generation failed", err);
     return "";
@@ -114,7 +124,8 @@ export async function startLaunchCampaign() {
 
     setTimeout(async () => {
       try {
-        const tweet = await generateLaunchTweet(LAUNCH_PROMPTS[i]);
+        const { prompt, appendLinks } = LAUNCH_PROMPTS[i];
+        const tweet = await generateLaunchTweet(prompt, !!appendLinks);
         if (tweet) {
           enqueueTweet({ text: tweet, type: "commentary" });
           log.info(`Launch tweet ${i + 1}/${LAUNCH_PROMPTS.length} queued`);

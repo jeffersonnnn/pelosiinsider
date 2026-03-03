@@ -18,14 +18,20 @@ function getSoul(): string {
   return soulPrompt;
 }
 
+const CA = "1S9KtXU7ZQEBpceAKyEB8svcqkCAynkTvzW36KLpump";
+const SITE = "https://pelosiinsider.com";
+
 export async function composeBuyTweet(symbol: string, score: number, txSignature?: string): Promise<string> {
   const tweet = await generateTweet(
-    `Write a tweet announcing you just BOUGHT $${symbol}. Score: ${score}/100. Write as Nancy Pelosi, the insider trading legend. Cold, official, darkly funny. Reference your "office," "Paul," "briefings," or "the committee" naturally. NO emojis, NO hashtags, NO exclamation marks. Under 200 characters. Just the tweet text, nothing else.`
+    `Write a tweet announcing you just BOUGHT $${symbol}. Score: ${score}/100. Write as Nancy Pelosi, the insider trading legend. Cold, official, darkly funny. Reference your "office," "Paul," "briefings," or "the committee" naturally. NO emojis, NO hashtags, NO exclamation marks. Under 140 characters. Just the tweet text, nothing else.`
   );
+  const links = [];
   if (txSignature && !txSignature.startsWith("paper")) {
-    return `${tweet}\n\nhttps://solscan.io/tx/${txSignature}`;
+    links.push(`https://solscan.io/tx/${txSignature}`);
   }
-  return tweet;
+  links.push(`Analysis: ${SITE}`);
+  links.push(`CA: ${CA}`);
+  return `${tweet}\n\n${links.join("\n")}`;
 }
 
 export async function composeSellTweet(symbol: string, pnlPct: number, reason: string, txSignature?: string): Promise<string> {
@@ -35,17 +41,20 @@ export async function composeSellTweet(symbol: string, pnlPct: number, reason: s
   let tweet: string;
   if (isProfit) {
     tweet = await generateTweet(
-      `Write a tweet announcing you SOLD $${symbol} at ${pnlStr} profit. Exit reason: ${reason}. Write as Nancy Pelosi gloating subtly. Cold satisfaction. Maybe mention Paul, the committee, or democracy working. NO emojis, NO hashtags, NO exclamation marks. Under 200 characters. Just the tweet text.`
+      `Write a tweet announcing you SOLD $${symbol} at ${pnlStr} profit. Exit reason: ${reason}. Write as Nancy Pelosi gloating subtly. Cold satisfaction. Maybe mention Paul, the committee, or democracy working. NO emojis, NO hashtags, NO exclamation marks. Under 140 characters. Just the tweet text.`
     );
   } else {
     tweet = await generateTweet(
-      `Write a tweet announcing you SOLD $${symbol} at ${pnlStr} loss. Exit reason: ${reason}. Write as Nancy Pelosi, unbothered but calling for investigations. Blame the market, not yourself. NO emojis, NO hashtags, NO exclamation marks. Under 200 characters. Just the tweet text.`
+      `Write a tweet announcing you SOLD $${symbol} at ${pnlStr} loss. Exit reason: ${reason}. Write as Nancy Pelosi, unbothered but calling for investigations. Blame the market, not yourself. NO emojis, NO hashtags, NO exclamation marks. Under 140 characters. Just the tweet text.`
     );
   }
+  const links = [];
   if (txSignature && !txSignature.startsWith("paper")) {
-    return `${tweet}\n\nhttps://solscan.io/tx/${txSignature}`;
+    links.push(`https://solscan.io/tx/${txSignature}`);
   }
-  return tweet;
+  links.push(`Analysis: ${SITE}`);
+  links.push(`CA: ${CA}`);
+  return `${tweet}\n\n${links.join("\n")}`;
 }
 
 export async function composeCommentaryTweet(): Promise<string> {
