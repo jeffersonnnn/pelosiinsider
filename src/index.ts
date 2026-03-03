@@ -44,7 +44,7 @@ async function main() {
       for (const token of buySignals) {
         const position = await openPosition(token);
         if (position) {
-          const tweet = await composeBuyTweet(token.symbol, token.score ?? 0);
+          const tweet = await composeBuyTweet(token.symbol, token.score ?? 0, position.txBuy);
           enqueueTweet({ text: tweet, type: "buy", mint: token.mint, symbol: token.symbol });
         }
       }
@@ -59,7 +59,7 @@ async function main() {
       const { closed } = await checkPositions();
       for (const pos of closed) {
         const pnl = pos.pnlPct ?? 0;
-        const tweet = await composeSellTweet(pos.symbol, pnl, pos.exitReason ?? "unknown");
+        const tweet = await composeSellTweet(pos.symbol, pnl, pos.exitReason ?? "unknown", pos.txSell);
         const type = pnl > 0 ? "sell_profit" : "sell_loss";
         enqueueTweet({ text: tweet, type, mint: pos.mint, symbol: pos.symbol });
       }
