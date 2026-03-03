@@ -622,6 +622,18 @@ a:hover { text-decoration: underline; }
 <!-- TRADING DASHBOARD -->
 <div class="trading-dashboard" id="dashboard">
   <div class="dashboard-section-title"><i class="fas fa-chart-bar"></i>&nbsp; Portfolio Overview</div>
+  <div class="treasury-mission" style="background:linear-gradient(135deg,#0d162f,#1a3a6b);border:1px solid rgba(66,109,230,0.3);border-radius:6px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);font-weight:700">Treasury Wallet</div>
+      <a href="https://solscan.io/account/767YCoWpk4Rw91vSK5HpDR2vMbK9SeWukTwTGpiP2sjV" target="_blank" style="font-family:monospace;font-size:12px;color:rgba(255,255,255,0.7);text-decoration:none;word-break:break-all" title="View on Solscan">767YCoWpk4Rw91vSK5HpDR2vMbK9SeWukTwTGpiP2sjV</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px">Starting</div><div style="font-size:16px;font-weight:800;color:#fff">34 SOL</div></div>
+      <div style="font-size:18px;color:rgba(255,255,255,0.3)"><i class="fas fa-arrow-right"></i></div>
+      <div style="text-align:center"><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px">Target</div><div style="font-size:16px;font-weight:800;color:#4ade80">333 SOL</div></div>
+      <div id="progress-pct" style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:600"></div>
+    </div>
+  </div>
   <div class="stats-grid" id="stats"></div>
 
   <div class="panels-grid" id="positions-section">
@@ -781,6 +793,9 @@ async function refresh() {
 
     document.getElementById('alert-status').textContent =
       stats.openPositions + ' open positions | ' + stats.totalTrades + ' trades | ' + fmt(stats.totalPnl,4) + ' SOL PnL';
+
+    var progress = Math.min(100, (stats.balance / 333 * 100)).toFixed(1);
+    document.getElementById('progress-pct').textContent = progress + '% to target';
   }
 
   /* POSITIONS */
