@@ -162,6 +162,14 @@ a:hover { text-decoration: underline; }
 .navbar-ca:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
 .navbar-ca-label { font-family: "Open Sans", sans-serif; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,0.45); }
 .navbar-ca-value { user-select: all; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+.navbar-twitter {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+  font-size: 15px; text-decoration: none; flex-shrink: 0;
+  transition: background 0.2s, color 0.2s;
+}
+.navbar-twitter:hover { background: rgba(255,255,255,0.25); color: #fff; text-decoration: none; }
 
 /* HERO CAROUSEL */
 .hero-carousel {
@@ -515,6 +523,9 @@ a:hover { text-decoration: underline; }
       <span class="navbar-ca-value" id="ca-val">${config.contractAddress || 'coming soon'}</span>
       <i class="fas fa-copy" style="font-size:10px;opacity:0.5"></i>
     </div>
+    <a href="https://x.com/PelosiClaw" target="_blank" class="navbar-twitter" title="Follow @PelosiClaw on X">
+      <i class="fab fa-x-twitter"></i>
+    </a>
   </div>
 </nav>
 
