@@ -8,6 +8,15 @@ const log = createLogger("scheduler");
 
 const queue: Tweet[] = [];
 let lastTweetTime = 0;
+let launchMode = false;
+const LAUNCH_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
+let launchStartTime = 0;
+
+export function enableLaunchMode() {
+  launchMode = true;
+  launchStartTime = Date.now();
+  setTimeout(() => { launchMode = false; }, LAUNCH_DURATION_MS);
+}
 
 export function enqueueTweet(tweet: Omit<Tweet, "id" | "timestamp" | "posted">) {
   const full: Tweet = {
@@ -23,13 +32,15 @@ export async function processQueue(): Promise<void> {
   if (!queue.length) return;
 
   const now = Date.now();
-  if (now - lastTweetTime < config.intervals.tweetMs) {
+  const minInterval = launchMode ? 60_000 : config.intervals.tweetMs; // 1 min during launch, normal otherwise
+  if (now - lastTweetTime < minInterval) {
     return; // Rate limit between tweets
   }
 
+  const maxDaily = launchMode ? 100 : config.twitter.maxTweetsPerDay;
   const todayCount = getTodayTweetCount();
-  if (todayCount >= config.twitter.maxTweetsPerDay) {
-    log.warn(`Daily tweet limit (${config.twitter.maxTweetsPerDay}) reached`);
+  if (todayCount >= maxDaily) {
+    log.warn(`Daily tweet limit (${maxDaily}) reached`);
     return;
   }
 

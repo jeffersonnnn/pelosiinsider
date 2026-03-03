@@ -7,9 +7,10 @@ import { startTokenFeed, enrichQueuedTokens, stopTokenFeed } from "./monitor/tok
 import { evaluateTokens } from "./evaluator/scorer";
 import { openPosition, checkPositions } from "./trader/positions";
 import { composeBuyTweet, composeSellTweet, composeCommentaryTweet } from "./twitter/composer";
-import { enqueueTweet, processQueue } from "./twitter/scheduler";
+import { enqueueTweet, processQueue, enableLaunchMode } from "./twitter/scheduler";
 import { initMentions, checkMentions } from "./twitter/mentions";
 import { startWebServer } from "./web/server";
+import { startLaunchCampaign } from "./twitter/launch-campaign";
 
 const log = createLogger("main");
 
@@ -26,6 +27,10 @@ async function main() {
   startTokenFeed();
 
   log.info("All systems initialized. Starting main loop...");
+
+  // Launch campaign: 24 tweets in first 2 hours, every 5 min
+  enableLaunchMode();
+  startLaunchCampaign();
 
   // Discovery loop: enrich + evaluate tokens
   setInterval(async () => {
